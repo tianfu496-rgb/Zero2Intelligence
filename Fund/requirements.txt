@@ -1,4 +1,0 @@
-akshare
-pandas
-openpyxl
-matplotlib
