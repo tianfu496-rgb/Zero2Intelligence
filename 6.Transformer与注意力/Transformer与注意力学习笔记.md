@@ -100,9 +100,9 @@ $$
 E\in\mathbb{R}^{V\times d_{model}}
 $$
 
-其中 $V$ 是词表大小。输入 id 为 $i$ 时，模型取出矩阵第 $i$ 行，得到 $d_{model}$ 维向量。
+其中 $`V`$ 是词表大小。输入 id 为 $`i`$ 时，模型取出矩阵第 $`i`$ 行，得到 $`d_{model}`$ 维向量。
 
-若 batch 大小为 $B$、序列长度为 $T$，则：
+若 batch 大小为 $`B`$、序列长度为 $`T`$，则：
 
 ```text
 input_ids:       (B, T)
@@ -127,7 +127,7 @@ $$
 
 ### 4.2 原始 Transformer 的正弦位置编码
 
-对位置 $pos$ 和向量维度组 $i$：
+对位置 $`pos`$ 和向量维度组 $`i`$：
 
 $$
 PE(pos,2i)=\sin\left(\frac{pos}{10000^{2i/d_{model}}}\right)
@@ -137,9 +137,9 @@ $$
 PE(pos,2i+1)=\cos\left(\frac{pos}{10000^{2i/d_{model}}}\right)
 $$
 
-- $pos$：token 在序列中的位置，从 0 开始。
-- $i$：位置编码向量内部的维度组编号。
-- $d_{model}$：模型隐藏维度。
+- $`pos`$：token 在序列中的位置，从 0 开始。
+- $`i`$：位置编码向量内部的维度组编号。
+- $`d_{model}`$：模型隐藏维度。
 
 不同维度使用不同频率的 sin/cos，使模型能从向量中推断相对或绝对位置信息。现代模型也会使用可学习位置编码、RoPE 等方案；核心目的相同：让模型知道顺序。
 
@@ -149,7 +149,7 @@ $$
 
 ### 5.1 Q、K、V 的含义
 
-输入表示 $X$ 分别经过三组可学习线性变换：
+输入表示 $`X`$ 分别经过三组可学习线性变换：
 
 $$
 Q=XW_Q,\qquad K=XW_K,\qquad V=XW_V
@@ -173,15 +173,15 @@ $$
 Attention(Q,K,V)=\operatorname{softmax}\left(\frac{QK^T}{\sqrt{d_k}}+M\right)V
 $$
 
-其中 $M$ 为可选的 mask。
+其中 $`M`$ 为可选的 mask。
 
 计算过程：
 
-1. **打分**：$S=QK^T$，得到每个 Query 对所有 Key 的相关度。
-2. **缩放**：除以 $\sqrt{d_k}$，避免维度大时点积数值过大、Softmax 过度饱和。
+1. **打分**：$`S=QK^T`$，得到每个 Query 对所有 Key 的相关度。
+2. **缩放**：除以 $`\sqrt{d_k}`$，避免维度大时点积数值过大、Softmax 过度饱和。
 3. **加 Mask**：禁止关注的位置加上极小值（实现中常为 `-inf` 或很小的负数）。
-4. **归一化**：$A=softmax(S)$，每一行成为概率分布。
-5. **加权汇总**：输出 $O=AV$。
+4. **归一化**：$`A=softmax(S)`$，每一行成为概率分布。
+5. **加权汇总**：输出 $`O=AV`$。
 
 若 `Q` 的形状为 `(B, H, Lq, d_k)`，`K` 为 `(B, H, Lk, d_k)`，则：
 
@@ -198,7 +198,7 @@ output = weights @ V              # (B, H, Lq, d_v)
 
 ### 5.4 多头注意力
 
-多头注意力（Multi-Head Attention）将隐藏维度切成 $h$ 个头，在不同子空间中独立计算注意力，再拼接投影：
+多头注意力（Multi-Head Attention）将隐藏维度切成 $`h`$ 个头，在不同子空间中独立计算注意力，再拼接投影：
 
 $$
 MultiHead(Q,K,V)=Concat(head_1,...,head_h)W_O
@@ -231,7 +231,7 @@ Mask 不会删除 token，而是在 Softmax **之前**修改 attention score，�
 
 ### 6.2 Causal Mask
 
-Causal Mask（因果掩码）用于自回归解码，保证位置 $i$ 只能关注当前位置和左侧位置 $j\le i$：
+Causal Mask（因果掩码）用于自回归解码，保证位置 $`i`$ 只能关注当前位置和左侧位置 $`j\le i`$：
 
 $$
 M_{i,j}=\begin{cases}
@@ -283,7 +283,7 @@ $$
 FFN(x)=\sigma(xW_1+b_1)W_2+b_2
 $$
 
-经过 $N$ 层后，编码器输出 `memory`，形状通常为 `(B, S, d_model)`，其中 $S$ 是源序列长度。
+经过 $`N`$ 层后，编码器输出 `memory`，形状通常为 `(B, S, d_model)`，其中 $`S`$ 是源序列长度。
 
 ### 7.2 Decoder 的职责
 
@@ -554,7 +554,7 @@ cols = Lk
 
 ### 12.2 稳定 Softmax
 
-直接计算 $\exp(x_i)$ 可能溢出。数值稳定的 Softmax 先减去该行最大值：
+直接计算 $`\exp(x_i)`$ 可能溢出。数值稳定的 Softmax 先减去该行最大值：
 
 $$
 softmax(x_i)=\frac{\exp(x_i-\max(x))}{\sum_j\exp(x_j-\max(x))}
@@ -630,9 +630,9 @@ Profiling 定位瓶颈
 
 ## 14. 高频问答
 
-### Q1：Attention 为什么要除以 $\sqrt{d_k}$？
+### Q1：Attention 为什么要除以 $`\sqrt{d_k}`$？
 
-当 $d_k$ 增大，Q 和 K 点积的数值方差也会增大。过大的分数会让 Softmax 分布过尖，梯度变小。缩放可以保持数值范围更稳定。
+当 $`d_k`$ 增大，Q 和 K 点积的数值方差也会增大。过大的分数会让 Softmax 分布过尖，梯度变小。缩放可以保持数值范围更稳定。
 
 ### Q2：Q、K、V 为什么不能只用一个向量？
 
@@ -663,7 +663,7 @@ Padding Mask 屏蔽的是无意义的补齐 token；Causal Mask 屏蔽的是未�
 ## 15. 复习路线
 
 1. 先掌握 Token、Embedding、位置编码与张量形状。
-2. 手推一次 $QK^T$、Softmax、加权 V 的注意力计算。
+2. 手推一次 $`QK^T`$、Softmax、加权 V 的注意力计算。
 3. 用小矩阵分别验证 Padding Mask 和 Causal Mask。
 4. 画出 Encoder–Decoder 的三处注意力及其 Q/K/V 来源。
 5. 理解标签右移、Teacher Forcing、交叉熵、PAD 忽略和一次训练 step。
