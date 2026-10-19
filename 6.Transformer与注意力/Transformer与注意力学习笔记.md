@@ -96,9 +96,9 @@ BPE（Byte Pair Encoding）从细粒度符号开始，反复统计相邻符号�
 
 Token ID 只是离散编号，不表示语义距离。Embedding 层是一个可学习矩阵：
 
-$$
+```math
 E\in\mathbb{R}^{V\times d_{model}}
-$$
+```
 
 其中 $`V`$ 是词表大小。输入 id 为 $`i`$ 时，模型取出矩阵第 $`i`$ 行，得到 $`d_{model}`$ 维向量。
 
@@ -119,9 +119,9 @@ token_embedding: (B, T, d_model)
 
 位置编码（Position Encoding, PE）为每个位置提供位置信息，并与 token embedding 相加：
 
-$$
+```math
 X=TokenEmbedding+PositionalEncoding
-$$
+```
 
 相加要求二者最后一维相同，结果仍为 `(B, T, d_model)`。
 
@@ -129,13 +129,13 @@ $$
 
 对位置 $`pos`$ 和向量维度组 $`i`$：
 
-$$
+```math
 PE(pos,2i)=\sin\left(\frac{pos}{10000^{2i/d_{model}}}\right)
-$$
+```
 
-$$
+```math
 PE(pos,2i+1)=\cos\left(\frac{pos}{10000^{2i/d_{model}}}\right)
-$$
+```
 
 - $`pos`$：token 在序列中的位置，从 0 开始。
 - $`i`$：位置编码向量内部的维度组编号。
@@ -151,9 +151,9 @@ $$
 
 输入表示 $`X`$ 分别经过三组可学习线性变换：
 
-$$
+```math
 Q=XW_Q,\qquad K=XW_K,\qquad V=XW_V
-$$
+```
 
 可以这样直观理解：
 
@@ -169,9 +169,9 @@ Q、K、V 并不是三份外部输入，而通常是对同一输入或不同来�
 
 缩放点积注意力（Scaled Dot-Product Attention）：
 
-$$
-Attention(Q,K,V)=\operatorname{softmax}\left(\frac{QK^T}{\sqrt{d_k}}+M\right)V
-$$
+```math
+Attention(Q,K,V)=\mathrm{softmax}\left(\frac{QK^T}{\sqrt{d_k}}+M\right)V
+```
 
 其中 $`M`$ 为可选的 mask。
 
@@ -200,15 +200,15 @@ output = weights @ V              # (B, H, Lq, d_v)
 
 多头注意力（Multi-Head Attention）将隐藏维度切成 $`h`$ 个头，在不同子空间中独立计算注意力，再拼接投影：
 
-$$
+```math
 MultiHead(Q,K,V)=Concat(head_1,...,head_h)W_O
-$$
+```
 
 常见关系为：
 
-$$
+```math
 d_k=d_{model}/h
-$$
+```
 
 多头机制让模型可以并行学习不同关联模式，例如局部搭配、长距离依赖、指代关系等。
 
@@ -233,12 +233,12 @@ Mask 不会删除 token，而是在 Softmax **之前**修改 attention score，�
 
 Causal Mask（因果掩码）用于自回归解码，保证位置 $`i`$ 只能关注当前位置和左侧位置 $`j\le i`$：
 
-$$
+```math
 M_{i,j}=\begin{cases}
 0,&j\le i\\
 -\infty,&j>i
 \end{cases}
-$$
+```
 
 例如长度为 4 的下三角可见关系：
 
@@ -279,9 +279,9 @@ Encoder 双向读取完整源序列，生成带上下文的表示。单个 Encod
 
 FFN 对每个位置独立进行相同的非线性变换，常写作：
 
-$$
+```math
 FFN(x)=\sigma(xW_1+b_1)W_2+b_2
-$$
+```
 
 经过 $`N`$ 层后，编码器输出 `memory`，形状通常为 `(B, S, d_model)`，其中 $`S`$ 是源序列长度。
 
@@ -352,15 +352,15 @@ Decoder 输入：<BOS> 我 爱 你
 
 Logits 是模型对词表每个 token 输出的原始分数。Softmax 将它们转成概率：
 
-$$
+```math
 p(y=k)=\frac{e^{z_k}}{\sum_j e^{z_j}}
-$$
+```
 
 单个位置的交叉熵损失为：
 
-$$
+```math
 Loss=-\log p(y_{true})
-$$
+```
 
 正确 token 的概率越低，Loss 越大。实际实现一般直接使用 `CrossEntropyLoss`，不要先手动做 Softmax，以避免数值稳定性问题。
 
@@ -556,9 +556,9 @@ cols = Lk
 
 直接计算 $`\exp(x_i)`$ 可能溢出。数值稳定的 Softmax 先减去该行最大值：
 
-$$
+```math
 softmax(x_i)=\frac{\exp(x_i-\max(x))}{\sum_j\exp(x_j-\max(x))}
-$$
+```
 
 计算可分为三步：
 

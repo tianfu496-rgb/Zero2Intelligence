@@ -10,9 +10,9 @@ DenseNet：
 
 > **每一层都与后续层连接。**
 
-$$
+```math
 x_l=H_l([x_0,x_1,\dots,x_{l-1}])
-$$
+```
 
 其中 $`[\cdot]`$ 表示 Concatenation。
 

@@ -10,9 +10,9 @@ ResNet 核心：
 
 > Residual Connection
 
-$$
+```math
 y=F(x)+x
-$$
+```
 
 即：
 

@@ -17,9 +17,9 @@
 
 TF-IDF 用词频与逆文档频率衡量词的重要性：
 
-$$
+```math
 TF\text{-}IDF(w,d)=TF(w,d)\times \log\frac{N}{DF(w)+1}
-$$
+```
 
 它适合传统文本分类和检索，但仍忽略词序与上下文。
 

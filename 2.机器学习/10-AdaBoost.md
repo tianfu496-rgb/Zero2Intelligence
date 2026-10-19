@@ -13,19 +13,19 @@ AdaBoost 顺序训练弱分类器。前一轮错误分类的样本会获得更�
 
 下面采用标签 $`y_i\in\{-1,+1\}`$ 的二分类 AdaBoost 形式。它与多分类 SAMME 的系数形式有区别。
 
-$$
+```math
 \epsilon_t=\sum_{i=1}^{n}w_i^{(t)}\mathbf{1}[h_t(x_i)\ne y_i]
-$$
+```
 
-$$
+```math
 \alpha_t=\frac12\log\frac{1-\epsilon_t}{\epsilon_t}
-$$
+```
 
-$$
+```math
 w_i^{(t+1)}=\frac{w_i^{(t)}\exp(-\alpha_ty_ih_t(x_i))}{Z_t}
-$$
+```
 
-$`Z_t`$ 使权重之和恢复为 1；最终预测为 $`H(x)=\operatorname{sign}(\sum_t\alpha_th_t(x))`$。
+$`Z_t`$ 使权重之和恢复为 1；最终预测为 $`H(x)=\mathrm{sign}(\sum_t\alpha_th_t(x))`$。
 
 ## 初始化示例
 

@@ -39,9 +39,9 @@ Encoder × N ────────────────┐
 
 自注意力本身不包含顺序信息，因此输入表示为：
 
-$$
+```math
 X=TokenEmbedding+PositionalEncoding
-$$
+```
 
 原始论文使用正弦/余弦位置编码；现代模型也常使用可学习位置编码、RoPE（旋转位置编码）等方案。
 
@@ -49,15 +49,15 @@ $$
 
 输入 $`X`$ 分别线性映射得到 Query、Key、Value：
 
-$$
+```math
 Q=XW_Q,\quad K=XW_K,\quad V=XW_V
-$$
+```
 
 缩放点积注意力为：
 
-$$
+```math
 Attention(Q,K,V)=softmax(\frac{QK^T}{\sqrt{d_k}}+M)V
-$$
+```
 
 其中 $`M`$ 是 mask：padding mask 屏蔽补齐 token；causal mask 屏蔽未来 token。除以 $`\sqrt{d_k}`$ 可防止维度较大时点积过大，导致 softmax 梯度过小。
 
@@ -65,9 +65,9 @@ $$
 
 多头注意力在多个子空间并行计算注意力，再拼接投影：
 
-$$
+```math
 MultiHead=Concat(head_1,...,head_h)W_O
-$$
+```
 
 不同的头可学习不同类型的关系，如局部搭配、指代、句法关联等。
 

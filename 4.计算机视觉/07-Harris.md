@@ -24,27 +24,27 @@ Corner 的基本特征：
 
 考虑窗口发生小位移后的变化：
 
-$$
+```math
 E(u,v)=\sum_{x,y}w(x,y)[I(x+u,y+v)-I(x,y)]^2
-$$
+```
 
 近似：
 
-$$
+```math
 E(u,v)\approx\begin{bmatrix}u&v\end{bmatrix}M\begin{bmatrix}u\\v\end{bmatrix}
-$$
+```
 
 其中：
 
-$$
+```math
 M=\begin{bmatrix}\sum I_x^2&\sum I_xI_y\\\sum I_xI_y&\sum I_y^2\end{bmatrix}
-$$
+```
 
 Harris response：
 
-$$
-R=\det(M)-k\bigl(\operatorname{trace}(M)\bigr)^2
-$$
+```math
+R=\det(M)-k\bigl(\mathrm{trace}(M)\bigr)^2
+```
 
 ### 判断
 

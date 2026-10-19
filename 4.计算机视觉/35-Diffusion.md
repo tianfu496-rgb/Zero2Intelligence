@@ -12,23 +12,23 @@ Diffusion Model 的核心思想：
 
 逐渐向图像添加噪声：
 
-$$
+```math
 x_0\rightarrow x_1\rightarrow x_2\rightarrow\cdots\rightarrow x_T
-$$
+```
 
 最终：
 
-$$
+```math
 x_T\approx\mathcal N(0,I)
-$$
+```
 
 ### Reverse Process
 
 训练模型学习：
 
-$$
+```math
 x_T\rightarrow x_{T-1}\rightarrow\cdots\rightarrow x_0
-$$
+```
 
 即：
 

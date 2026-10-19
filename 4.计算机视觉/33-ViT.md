@@ -30,9 +30,9 @@ Classification Head
 
 Self-Attention：
 
-$$
-\operatorname{Attention}(Q,K,V)=\operatorname{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V
-$$
+```math
+\mathrm{Attention}(Q,K,V)=\mathrm{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V
+```
 
 ## Vision Transformer
 
@@ -42,27 +42,27 @@ ViT 核心：
 
 假设图像大小：
 
-$$
+```math
 H\times W
-$$
+```
 
 Patch 大小：
 
-$$
+```math
 P\times P
-$$
+```
 
 Patch 数量：
 
-$$
+```math
 N=\frac{HW}{P^2}
-$$
+```
 
 然后：
 
-$$
+```math
 \text{Image}\rightarrow N\text{ Patches}\rightarrow N\text{ Tokens}\rightarrow\text{Transformer}
-$$
+```
 
 ---
 

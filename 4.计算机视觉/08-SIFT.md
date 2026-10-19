@@ -34,21 +34,21 @@ Descriptor
 
 尺度空间：
 
-$$
+```math
 L(x,y,\sigma)=G(x,y,\sigma)*I(x,y)
-$$
+```
 
 DoG：
 
-$$
+```math
 D(x,y,\sigma)=L(x,y,k\sigma)-L(x,y,\sigma)
-$$
+```
 
 经典 SIFT Descriptor：
 
-$$
+```math
 4\times4\times8=128
-$$
+```
 
 即：
 

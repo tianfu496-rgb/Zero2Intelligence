@@ -8,15 +8,15 @@
 
 把像素看成数据点：
 
-$$
+```math
 x_i=[R_i,G_i,B_i]
-$$
+```
 
 目标：
 
-$$
+```math
 J=\sum_{i=1}^{N}\lVert x_i-\mu_{c_i}\rVert^2
-$$
+```
 
 流程：
 

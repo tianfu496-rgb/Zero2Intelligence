@@ -36,9 +36,9 @@ CNN 擅长处理：
 
 卷积核：
 
-$$
+```math
 K\in\mathbb{R}^{H\times W\times C}
-$$
+```
 
 卷积的核心：
 
@@ -56,9 +56,9 @@ $$
 
 Kernel：
 
-$$
+```math
 K\times K
-$$
+```
 
 输入通道：
 
@@ -80,9 +80,9 @@ K2CinCout+CoutK^2C_{in}C_{out}+C_{out}
 
 输出尺寸：
 
-$$
+```math
 O=\left\lfloor\frac{N+2P-K}{S}\right\rfloor+1
-$$
+```
 
 其中：
 
@@ -128,9 +128,9 @@ pool = nn.MaxPool2d(
 
 ## ReLU
 
-$$
-\operatorname{ReLU}(x)=\max(0,x)
-$$
+```math
+\mathrm{ReLU}(x)=\max(0,x)
+```
 
 ```python
 relu = nn.ReLU()
@@ -150,9 +150,9 @@ relu = nn.ReLU()
 
 全连接层：
 
-$$
+```math
 y=Wx+b
-$$
+```
 
 每个输出神经元连接所有输入。
 
@@ -172,15 +172,15 @@ Class Scores
 
 对于一个 Batch：
 
-$$
+```math
 \hat{x}=\frac{x-\mu_B}{\sqrt{\sigma_B^2+\epsilon}}
-$$
+```
 
 然后：
 
-$$
+```math
 y=\gamma\hat{x}+\beta
-$$
+```
 
 其中：
 
@@ -239,9 +239,9 @@ Parameter Update
 
 梯度下降：
 
-$$
+```math
 \theta_{t+1}=\theta_t-\eta\nabla_\theta L
-$$
+```
 
 其中：
 
@@ -271,9 +271,9 @@ optimizer.step()
 
 常用于回归：
 
-$$
+```math
 L=\frac1N\sum_i(y_i-\hat y_i)^2
-$$
+```
 
 ---
 
@@ -281,15 +281,15 @@ $$
 
 分类任务常用：
 
-$$
+```math
 L=-\sum_i y_i\log p_i
-$$
+```
 
 如果真实类别是 $`k`$：
 
-$$
+```math
 L=-\log p_k
-$$
+```
 
 因此：
 

@@ -12,9 +12,9 @@
 
 最简单的分割方法：
 
-$$
+```math
 g(x,y)=\begin{cases}1,&I(x,y)>T\\0,&I(x,y)\le T\end{cases}
-$$
+```
 
 ```python
 _, binary = cv2.threshold(
@@ -35,9 +35,9 @@ Otsu 自动寻找最佳阈值。
 
 设前景和背景分为两类：
 
-$$
+```math
 \sigma_B^2=\omega_0\omega_1(\mu_0-\mu_1)^2
-$$
+```
 
 选择使 $`\sigma_B^2`$ 最大的阈值。
 

@@ -9,9 +9,9 @@
 
 Hard Voting 对类别投票；Soft Voting 对类别概率做平均或加权平均。Soft Voting 需要基模型提供可比较的概率估计。
 
-$$
-\hat y=\operatorname*{arg\,max}_k\sum_{b=1}^{B}\omega_b p_b(y=k\mid x)
-$$
+```math
+\hat y=\mathrm{arg\,max}_k\sum_{b=1}^{B}\omega_b p_b(y=k\mid x)
+```
 
 ## Stacking：再训练一个元模型
 

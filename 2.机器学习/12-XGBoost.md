@@ -11,21 +11,21 @@ XGBoost 提供梯度提升的高效实现。树提升器在每轮同时利用损
 
 ## 树提升的目标
 
-$$
+```math
 \mathcal L=\sum_i\ell(y_i,\hat y_i)+\sum_t\Omega(f_t)
-$$
+```
 
 对一棵有 $`T`$ 个叶子、叶子输出为 $`w_j`$ 的树，一种常见惩罚形式为：
 
-$$
+```math
 \Omega(f)=\gamma T+\frac\lambda2\sum_{j=1}^{T}w_j^2
-$$
+```
 
 第 $`t`$ 轮的二阶近似省略常数后为：
 
-$$
+```math
 \widetilde{\mathcal L}^{(t)}=\sum_i\left[g_if_t(x_i)+\frac12h_if_t(x_i)^2\right]+\Omega(f_t)
-$$
+```
 
 这里 $`g_i`$、$`h_i`$ 分别是损失对当前预测的一阶、二阶导数。它们用于选择分裂与叶子输出。
 

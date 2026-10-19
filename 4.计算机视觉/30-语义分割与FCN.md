@@ -37,9 +37,9 @@ Pixel → sky
 
 输出：
 
-$$
+```math
 H\times W\times C
-$$
+```
 
 每个像素都有 $`C`$ 个类别的预测。
 
