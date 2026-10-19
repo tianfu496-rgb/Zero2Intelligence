@@ -1,0 +1,5 @@
+[
+  {"id": "tool", "question": "工具调用", "expected_source": "tools.md", "expected_abstain": false},
+  {"id": "rag", "question": "RAG", "expected_source": "rag.md", "expected_abstain": false},
+  {"id": "empty", "question": "photosynthesis", "expected_source": null, "expected_abstain": true}
+]
