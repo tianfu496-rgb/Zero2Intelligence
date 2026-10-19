@@ -37,7 +37,7 @@
 | 生成/翻译 | BLEU、ROUGE、METEOR | 与参考答案的 n-gram 重合度；应结合人工评估 |
 | 语言模型 | Perplexity（困惑度） | 越低表示模型对真实文本的预测越确定 |
 
-\(F1=\frac{2PR}{P+R}\)，其中 \(P\) 为 Precision，\(R\) 为 Recall。
+$F1=\frac{2PR}{P+R}$，其中 $P$ 为 Precision，$R$ 为 Recall。
 
 ---
 
@@ -79,7 +79,7 @@
 
 #### One-hot 编码
 
-若词表大小为 \(V\)，每个词用一个长度为 \(V\) 的向量表示，所在词表位置为 1，其余为 0。
+若词表大小为 $V$，每个词用一个长度为 $V$ 的向量表示，所在词表位置为 1，其余为 0。
 
 - 优点：直观、无需训练。
 - 缺点：维度高、极度稀疏；任意两个不同词的向量距离相同，无法表达语义相似性。
@@ -90,7 +90,9 @@
 
 TF-IDF 用词频与逆文档频率衡量词的重要性：
 
-\[TF\text{-}IDF(w,d)=TF(w,d)\times \log\frac{N}{DF(w)+1}\]
+$$
+TF\text{-}IDF(w,d)=TF(w,d)\times \log\frac{N}{DF(w)+1}
+$$
 
 它适合传统文本分类和检索，但仍忽略词序与上下文。
 
@@ -105,7 +107,7 @@ Word2Vec 学习稠密的词向量，使上下文相似的词在向量空间中�
 
 #### Word Embedding
 
-Embedding 本质是一个可学习的查表矩阵 \(E\in\mathbb{R}^{V\times d}\)。输入 token id 后直接取第 id 行作为 \(d\) 维稠密向量。它是深度 NLP 模型的基础层，可随机初始化后随任务训练，也可加载预训练词向量。
+Embedding 本质是一个可学习的查表矩阵 $E\in\mathbb{R}^{V\times d}$。输入 token id 后直接取第 id 行作为 $d$ 维稠密向量。它是深度 NLP 模型的基础层，可随机初始化后随任务训练，也可加载预训练词向量。
 
 **静态词向量的局限**：同一词只有一个向量，无法区分多义词。例如“苹果手机”和“苹果水果”中的“苹果”语义不同。ELMo、BERT 等上下文词向量解决了这一问题。
 
@@ -137,11 +139,13 @@ Embedding 本质是一个可学习的查表矩阵 \(E\in\mathbb{R}^{V\times d}\)
 
 ### 1. 认识 RNN 模型
 
-循环神经网络（RNN）适用于序列数据。它按时间步读取输入，并将历史信息存入隐藏状态 \(h_t\)：
+循环神经网络（RNN）适用于序列数据。它按时间步读取输入，并将历史信息存入隐藏状态 $h_t$：
 
-\[h_t=\tanh(W_{xh}x_t+W_{hh}h_{t-1}+b_h)\]
+$$
+h_t=\tanh(W_{xh}x_t+W_{hh}h_{t-1}+b_h)
+$$
 
-其中 \(x_t\) 是当前输入，\(h_{t-1}\) 是前一时刻状态。RNN 的参数在各时间步共享，理论上能处理任意长度序列。
+其中 $x_t$ 是当前输入，$h_{t-1}$ 是前一时刻状态。RNN 的参数在各时间步共享，理论上能处理任意长度序列。
 
 ### 2. 传统 RNN 模型
 
@@ -160,17 +164,21 @@ RNN 通过时间反向传播（BPTT）训练。长序列中梯度会连续乘以
 
 ### 3. LSTM 模型
 
-长短期记忆网络（LSTM）通过细胞状态 \(c_t\) 和门控机制控制信息流。
+长短期记忆网络（LSTM）通过细胞状态 $c_t$ 和门控机制控制信息流。
 
-- **遗忘门** \(f_t\)：保留多少旧记忆。
-- **输入门** \(i_t\)：写入多少当前候选信息。
-- **输出门** \(o_t\)：从细胞状态输出多少信息。
+- **遗忘门** $f_t$：保留多少旧记忆。
+- **输入门** $i_t$：写入多少当前候选信息。
+- **输出门** $o_t$：从细胞状态输出多少信息。
 
 核心更新：
 
-\[c_t=f_t\odot c_{t-1}+i_t\odot \tilde{c}_t\]
+$$
+c_t=f_t\odot c_{t-1}+i_t\odot \tilde{c}_t
+$$
 
-\[h_t=o_t\odot \tanh(c_t)\]
+$$
+h_t=o_t\odot \tanh(c_t)
+$$
 
 门值在 0 到 1 之间，使用逐元素乘法调节信息。LSTM 的加性细胞状态路径有利于梯度传播，因此比普通 RNN 更能处理长依赖。
 
@@ -200,13 +208,17 @@ RNN 通过时间反向传播（BPTT）训练。长序列中梯度会连续乘以
 
 Seq2Seq 的早期做法把整个源句压缩进一个固定长度向量，长句会形成信息瓶颈。注意力机制让解码器在生成每个词时，动态查看全部编码器状态。
 
-对解码第 \(t\) 步，计算当前解码状态 \(s_{t-1}\) 与每个编码状态 \(h_i\) 的匹配分数：
+对解码第 $t$ 步，计算当前解码状态 $s_{t-1}$ 与每个编码状态 $h_i$ 的匹配分数：
 
-\[\alpha_{t,i}=\text{softmax}(score(s_{t-1},h_i))\]
+$$
+\alpha_{t,i}=\text{softmax}(score(s_{t-1},h_i))
+$$
 
-\[c_t=\sum_i\alpha_{t,i}h_i\]
+$$
+c_t=\sum_i\alpha_{t,i}h_i
+$$
 
-\(\alpha_{t,i}\) 是注意力权重，\(c_t\) 是上下文向量。它能学习软对齐关系，例如翻译某个法语词时更关注对应的英语词。
+$\alpha_{t,i}$ 是注意力权重，$c_t$ 是上下文向量。它能学习软对齐关系，例如翻译某个法语词时更关注对应的英语词。
 
 ### 7. RNN 案例：Seq2Seq 英译法
 
@@ -249,7 +261,7 @@ Transformer 出自 2017 年论文 *Attention Is All You Need*。它抛弃循环�
 - 任意两个位置之间的信息交互路径更短，擅长长距离依赖。
 - 易于扩展为大规模预训练模型，如 BERT、GPT、T5。
 
-局限是标准自注意力的时间和空间复杂度随序列长度呈 \(O(n^2)\) 增长，超长文本成本较高。
+局限是标准自注意力的时间和空间复杂度随序列长度呈 $O(n^2)$ 增长，超长文本成本较高。
 
 ### 2. 认识 Transformer 的架构
 
@@ -274,27 +286,35 @@ Encoder × N ────────────────┐
 
 自注意力本身不包含顺序信息，因此输入表示为：
 
-\[X=TokenEmbedding+PositionalEncoding\]
+$$
+X=TokenEmbedding+PositionalEncoding
+$$
 
 原始论文使用正弦/余弦位置编码；现代模型也常使用可学习位置编码、RoPE（旋转位置编码）等方案。
 
 #### 自注意力机制
 
-输入 \(X\) 分别线性映射得到 Query、Key、Value：
+输入 $X$ 分别线性映射得到 Query、Key、Value：
 
-\[Q=XW_Q,\quad K=XW_K,\quad V=XW_V\]
+$$
+Q=XW_Q,\quad K=XW_K,\quad V=XW_V
+$$
 
 缩放点积注意力为：
 
-\[Attention(Q,K,V)=softmax(\frac{QK^T}{\sqrt{d_k}}+M)V\]
+$$
+Attention(Q,K,V)=softmax(\frac{QK^T}{\sqrt{d_k}}+M)V
+$$
 
-其中 \(M\) 是 mask：padding mask 屏蔽补齐 token；causal mask 屏蔽未来 token。除以 \(\sqrt{d_k}\) 可防止维度较大时点积过大，导致 softmax 梯度过小。
+其中 $M$ 是 mask：padding mask 屏蔽补齐 token；causal mask 屏蔽未来 token。除以 $\sqrt{d_k}$ 可防止维度较大时点积过大，导致 softmax 梯度过小。
 
 #### 多头注意力（Multi-Head Attention）
 
 多头注意力在多个子空间并行计算注意力，再拼接投影：
 
-\[MultiHead=Concat(head_1,...,head_h)W_O\]
+$$
+MultiHead=Concat(head_1,...,head_h)W_O
+$$
 
 不同的头可学习不同类型的关系，如局部搭配、指代、句法关联等。
 
@@ -335,13 +355,15 @@ Decoder Layer 包含三部分：
 
 语言模型学习条件概率：
 
-\[P(x_1,...,x_T)=\prod_{t=1}^{T}P(x_t\mid x_{<t})\]
+$$
+P(x_1,...,x_T)=\prod_{t=1}^{T}P(x_t\mid x_{<t})
+$$
 
 训练目标是预测下一个 token。给定 `我 喜欢 学习`，模型输入可为 `我 喜欢 学习`，监督标签右移一位：`喜欢 学习 <EOS>`。
 
 - 使用 decoder-only Transformer 和 causal mask，避免模型在训练时偷看未来答案。
 - 损失函数通常是 token 级交叉熵。
-- 温度 \(T\) 越低，分布越集中；越高，文本更多样但更容易失控。
+- 温度 $T$ 越低，分布越集中；越高，文本更多样但更容易失控。
 - top-k 从概率最高的 k 个 token 中采样；top-p（nucleus sampling）从累计概率达到 p 的候选集中采样。
 
 ---
